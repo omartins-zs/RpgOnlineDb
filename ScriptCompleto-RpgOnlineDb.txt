@@ -1,0 +1,125 @@
+--DDL
+
+--Criando o banco de dados
+CREATE DATABASE RpgOnlineBD
+
+-- Usa o banco de dados
+USE RpgOnlineBD
+
+-- Cria uma tabela
+CREATE TABLE Usuarios
+(	
+	UsuarioId INT PRIMARY KEY IDENTITY,
+	Email VARCHAR(100) UNIQUE NOT NULL,
+	Senha VARCHAR(50) NOT NULL
+);
+
+-- Cria Tabela Classes
+CREATE TABLE Classes
+(	
+	ClasseId INT PRIMARY KEY IDENTITY,
+	NomeClasse VARCHAR(50) UNIQUE NOT NULL,
+	Descricao VARCHAR(200)
+);
+
+-- Cria Tabela Personagens
+CREATE TABLE Personagens
+(	
+	PersonagemId INT PRIMARY KEY IDENTITY,
+	NomePersonagem VARCHAR(20) UNIQUE NOT NULL,
+	UsuarioId INT UNIQUE FOREIGN KEY REFERENCES Usuarios(UsuarioId),
+	ClasseId INT FOREIGN KEY REFERENCES Classes(ClasseId)
+);
+
+-- Cria Tabela Habilidades
+CREATE TABLE Habilidades
+(	
+	HabilidadeId INT PRIMARY KEY IDENTITY,
+	NomeHabilidade VARCHAR(30) UNIQUE NOT NULL
+);
+
+-- Cria Tabela ClasseHabilidade Usando FK
+CREATE TABLE ClasseHabilidade
+(	
+	HabilidadeId INT FOREIGN KEY REFERENCES Habilidades(HabilidadeId),
+	ClasseId INT FOREIGN KEY REFERENCES Classes(ClasseId)
+);
+
+--DML
+
+-- Insere os dados 
+INSERT INTO Usuarios VALUES('email@email.com', '123456')
+
+INSERT INTO Classes VALUES('Bárbaro', 'Descricao do bárbaro')
+
+INSERT INTO Habilidades VALUES('Lança Mortal'), ('Escudo Supremo')
+
+INSERT INTO Personagens (NomePersonagem, UsuarioId, ClasseId) VALUES ('DeuBug', 1, 1)
+
+INSERT INTO ClasseHabilidade(ClasseId, HabilidadeId) VALUES (1, 1), (1,2)
+
+-- 2 Exemplo
+
+INSERT INTO Usuarios VALUES('teste@teste.com', '654321')
+
+INSERT INTO Classes VALUES('Monge', 'Descricao do monge')
+
+INSERT INTO Habilidades VALUES('Recuperar Vida')
+
+INSERT INTO Personagens (NomePersonagem, UsuarioId, ClasseId) VALUES ('BitBug', 2, 2)
+
+INSERT INTO ClasseHabilidade(ClasseId, HabilidadeId) VALUES (2, 2), (2,3)
+
+UPDATE Usuarios
+SET Senha = 123456
+WHERE UsuarioId = 1
+
+--DQL
+
+SELECT * FROM Usuarios
+SELECT * FROM Classes
+SELECT * FROM Habilidades
+SELECT * FROM Personagens
+SELECT * FROM ClasseHabilidade
+
+-- Fazendo SELECT E JOIN
+SELECT * FROM Personagens
+INNER JOIN Classes
+ON Personagens.ClasseId = Classes.ClasseId    
+
+-- Usando o AS = Apelido
+SELECT * FROM Personagens AS P
+JOIN Classes AS C
+ON Personagens.ClasseId = Classes.ClasseId
+
+-- **Atividade Online 3**
+
+
+--DML Atividade Online 3 Material WEB
+
+INSERT INTO Habilidades VALUES ('Defesa Mortal'),('Avanço Infinito')
+INSERT INTO Personagens (NomePersonagem, UsuarioId, ClasseId) VALUES ('BigBug', 3, 3)
+INSERT INTO Usuarios VALUES ('jorge@email.com','123456')
+INSERT INTO Classes VALUES ('Tank','Descriçao do Tank')
+
+--Mudando senha de Usuario Especifico Atividade Online 3 Material WEB
+UPDATE  Usuarios
+SET Senha = senha
+WHERE UsuarioId = 4
+
+-- Criando Usuario para Atividade Online do Material Web
+ INSERT INTO Usuarios VALUES ('gabriel@email.com','123456')
+--Deletando Usuario Especifico Atividade Online
+DELETE FROM Usuarios WHERE UsuarioId = 5 
+
+-- Criando Permissoes
+
+CREATE LOGIN jogadorAluno
+WITH PASSWORD = '123456789'
+
+CREATE USER jogadorAluno FOR LOGIN jogadorAluno
+
+GRANT SELECT TO jogadorAluno
+
+-- Usuario 'jogadorAluno' ao estar logado so consegue executar o comando:
+SELECT * FROM Personagens
