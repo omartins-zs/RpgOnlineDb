@@ -2,6 +2,11 @@
 
 <h1 align="center">📖 Banco de Dados</h1>
 
+ <div align="center">
+
+   <cite align="center">`Repositorio Criado para Organização e Guardar os Arquivos de Entrega da UC10 Banco de Dados`</cite>
+
+</div>
 
 <br/>
 
